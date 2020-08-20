@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>出校申请</title>
+    <meta content="all" name="robots" />
+    <meta name="author" content="作者信息" />
+    <meta name="Copyright" content="版权信息" />
+    <meta name="description" content="站点介绍" />
+    <meta name="keywords" content="站点关键词" />
+    <meta name="applicable-device" content="mobile" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="main.css" />
+    <link type="text/css" rel="stylesheet" href="minirefresh.min.css" />
+    <script src="jquery.min.js"></script>
+    <script src="common.js"></script>
+    <script type="text/javascript" src="layer.js"></script>
+    <script type="text/javascript" src="minirefresh.min.js"></script>
+    <script type="text/javascript" src="jweixin-1.2.0.js"></script>
+    <style>
+        .title {
+            font-size: 100%;
+            color: #fff;
+        }
+        .header {
+            background-color:  #448bff;
+            padding: 1%;
+        }
+        .sidebar{float:center;
+            width:100%;
+            text-align: center;
+            position: relative;
+        }
+
+
+        .active{background: #fff;
+        }
+
+        .fix-top{margin-bottom: 5%;
+        }
+        .partj{
+            float:left;
+            width:100%;
+            line-height:26px;
+        }
+        .partj>p>span{
+            padding-right:5px;
+            color:#000;
+        }
+        .navbar-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 44px;
+            line-height: 44px;
+            text-align: left;
+            border-bottom: 1px solid #c8c7cc;
+            background-color: #00cc33;;
+            z-index: 999;
+        }
+        .navbar-tlt{
+            width:calc(100% - 80px);
+        }
+        .sy_div{
+            width:calc(100% - 70px);
+            float:left;
+        }
+        .nav-btn-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 12px;
+            line-height: 22px;
+        }
+        .comBox{
+            width:90%;
+            margin:0 auto !important;
+            border-radius: 5px;
+            box-shadow: 3px 0px 10px #ccc, -3px 0px 10px #ccc;
+        }
+        .course{
+            border-radius: 5px;
+        }
+        .course-status{
+            line-height: 24px;
+            height: 24px;
+            width: 50px;
+            background: #ccc;
+            float: right;
+            margin-top: -30px;
+            margin-right: -10px;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            color:#fff;
+            font-size:13px;
+            text-align:center;
+        }
+    </style>
+
+</head>
+<body>
+<form name="baseForm" method="post" action="/index.do">
+    <input type="hidden" name="pageSizeVal" id="pageSizeVal" value="10"/>
+    <input type="hidden" name="pageNumVal" id="pageNumVal" value="0"/>
+    <input type="hidden" name="dqsj" value="1597804831"/>
+    <input type="hidden" name="sjs" value="I5dbAg2QP5lGQbeG"/>
+    <input type="hidden" name="str" value="47e5d14b26a29ad2d2bd10495947d79821ebab85"/>
+    <nav class="navbar-header" id="navbar-header">
+        <div style="width:calc(50% - 1px);line-height:44px;height:44px;border-right:1px solid #ccc;text-align:center;float:left;;background:#eaeaea;font-size:16px;letter-spacing: 2px;color:#666;" onclick="addAppInfo()"><i class="icon-plus"></i>&nbsp;添加出校申请</div>
+        <div style="width:50%;line-height:44px;height:44px;text-align:center;float:right;;background:#eaeaea;font-size:16px;letter-spacing: 2px;color:#666;" onclick="modAppInfo()"><i class="icon-qrcode"></i>&nbsp;打开进校扫描</div>
+    </nav>
+    <div class="content">
+        <div id="minirefresh" class="minirefresh-wrap" style="background:#eaeaea;">
+            <div class="minirefresh-scroll" id="minirefresh-scroll" style="background:#eaeaea;"></div>
+        </div>
+    </div>
+    <script>
+        var firstLoad = true;
+        var gjzjs = false;
+        var lidx;
+
+
+        wx.config({
+            beta: true,
+            debug: false,
+            appId: 'wwea7a540aa5685cbb', // 必填，企业微信的corpID
+            timestamp: 1597821634, // 必填，生成签名的时间戳
+            nonceStr: 'Hqaj88DujEJJoTCr', // 必填，生成签名的随机串
+            signature: '5173e8b28dfe852101fb08eae2ca550461513278',// 必填，签名，见 附录-JS-SDK使用权限签名算法
+            jsApiList: ["scanQRCode"] // 必填，需要使用的JS接口列表，凡是要调用的接口都需要传进来
+        });
+
+
+        function showQrcode(){
+            wx.scanQRCode({
+                desc: 'scanQRCode desc',
+                needResult: 1,
+                scanType: ["qrCode"],
+                success: function (res) {
+                    window.location.href='https://wserverdhueducn.github.io/name.github.io/';
+                },
+                error: function (res) {
+                    if (res.errMsg.indexOf('function_not_exist') > 0) {
+                        alert('版本过低请升级')
+                    }
+                }
+            });
+        }
+
+        function loadFundData(dataVal){
+            if(dataVal != [] && dataVal.length>0){
+                var strBuf = new StringBuffer();
+                var datav;
+                var str = "";
+                for(var i=0;i<dataVal.length; i++){
+                    strBuf = new StringBuffer();
+                    datav = dataVal[i];
+                    strBuf.append("<div style='line-height:15px;width:100%;height:15px;'></div><div class='comBox'><div class='course'><div class='partj'><p class='courseUnder' style='border-bottom: 1px dashed #ccc;'><span>"+ datav.sqsj +"</span>");
+                    if(datav.shzt == "1"){
+                        strBuf.append("<div class='course-status' style='width:60px;background:linear-gradient(to right,#ff6600,#ff9900,#ff9966);'>审核通过</div></p><p class='courseUnder' style='padding-top:5px;'><span>出校日期：</span><em>"+ datav.cxrq +"时</em></p><div class='courseUnder'><div style='width:70px;float:left;color:#000;'>出校事由：</div><div class='sy_div'>"+ datav.cxsy +"</div></div><p class='courseUnder'><span>返校日期：</span><em>"+ datav.fxrq +"时</em></p>");
+                        strBuf.append("<p class='courseUnder'><a href='javascript:void(0)' onclick=showAppInfo()  style='float:right;padding:0px 10px;letter-spacing:2px;color:#00cc33;'><i class='icon-eye-open' style='font-size:14px;'></i>查看</a></p></div></div></div>");
+                    }else if(datav.shzt == "2"){
+                        strBuf.append("<div class='course-status' style='width:40px;background:linear-gradient(to right,#0066ff,#0099ff,#00aaff);'>退回</div></p><p class='courseUnder' style='padding-top:5px;'><span>出校日期：</span><em>"+ datav.cxrq +"时</em></p><div class='courseUnder'><div style='width:70px;float:left;color:#000;'>出校事由：</div><div class='sy_div'>"+ datav.cxsy +"</div></div><p class='courseUnder'><span>返校日期：</span><em>"+ datav.fxrq +"时</em></p>");
+                        strBuf.append("<p class='courseUnder'><a href='javascript:void(0)' onclick=showAppInfo() style='float:right;padding:0px 10px;letter-spacing:2px;color:#00cc33;'><i class='icon-eye-open' style='font-size:14px;'></i>查看</a></p></div></div></div>");
+                    }else{
+                        strBuf.append("<div class='course-status'>未审核</div></p><p class='courseUnder' style='padding-top:5px;'><span>出校日期：</span><em>"+ datav.cxrq +"时</em></p><div class='courseUnder'><div style='width:70px;float:left;color:#000;'>出校事由：</div><div class='sy_div'>"+ datav.cxsy +"</div></div><p class='courseUnder'><span>返校日期：</span><em>"+ datav.fxrq +"时</em></p>");
+                        if(datav.yxbj == "1") strBuf.append("<p class='courseUnder'><a href='javascript:void(0)' onclick=modAppInfo('"+ datav.rowCode +"') style='float:right;padding:0px 10px;letter-spacing:2px;color:#00cc33;'><i class='icon-edit' style='font-size:14px;'></i>修改</a>&nbsp;<a href='javascript:void(0)' onclick=delAppInfo(this,'"+ datav.rowCode +"') style='float:right;padding:0px 10px;letter-spacing:2px;color:#ff0000'><i class='icon-trash' style='font-size:14px;'></i>撤销</a></p></div></div></div>");
+                        else strBuf.append("<p class='courseUnder'><a href='javascript:void(0)' onclick=modAppInfo('"+ datav.rowCode +"') style='float:right;padding:0px 10px;letter-spacing:2px;color:#00cc33;'><i class='icon-eye-open' style='font-size:14px;'></i>查看</a></p></div></div></div>");
+                    }
+                    $("#minirefresh-scroll").append(strBuf.toString());
+                }
+            }
+        }
+        var miniRefresh = new MiniRefresh({
+            container: '#minirefresh',
+            isScrollBar:false,
+            down: {
+                callback: function() {
+                    setTimeout(function() {
+                        // 每次下拉刷新后，上拉的状态会被自动重置
+                        miniRefresh.endDownLoading(false);
+                    }, 1000);
+                }
+            },
+            up: {
+                isAuto: true,
+                callback: function() {
+                    $("#pageNumVal").val(parseInt($("#pageNumVal").val())+1);
+                    setTimeout(function() {
+                        window.setTimeout(function(){
+                            window.requestAnimationFrame(getDate)
+                        },1000/2);
+                        var d=new Date();
+                        var year=d.getFullYear() ; //获取年
+                        var month=d.getMonth()+1;  //获取月，从 Date 对象返回月份 (0 ~ 11)，故在此处+1
+                        var day=d.getDay() ;   //获取日
+                        var days=d.getDate(); //获取日期
+                        var qdays=d.getDate()-1;
+                        var hour=d.getHours() ;  //获取小时
+                        var minute=d.getMinutes() ; //获取分钟
+                        var second=d.getSeconds() ;  //获取秒
+                        if(month<10) month="0"+month;
+                        if(days<10) days="0"+days;
+                        if(hour<10) hour="0"+hour;
+                        if(minute<10) minute="0"+minute;
+                        if(second<10) second="0"+second;
+
+                        var Tools=year+"-"+month+"-"+qdays+"  "+"12"+":"+"14"+":"+"45";
+                        var Tools1=year+"-"+month+"-"+days+" 11"
+                        var Tools2=year+"-"+month+"-"+days+" 22"
+
+                        var data=[{"sqsj":Tools,"fxrq":Tools2,"cxsy":"剪头发","rowCode":"62251d4e7d664fefa3d96e639636b955","cxrq":Tools1,"shzt":"1","yxbj":"0"},{"sqsj":"2020-08-17 13:51:30","fxrq":"2020-08-18 22","cxsy":"买水果","rowCode":"0fc0f62d5b244c5fa528551ee6e34ab3","cxrq":"2020-08-18 11","shzt":"1","yxbj":"0"}]
+                        var jsonData = eval(data);
+                        loadFundData(jsonData);
+                        if(jsonData.length == 10) miniRefresh.endUpLoading(false);
+                        else miniRefresh.endUpLoading(true);
+                        if(firstLoad) {
+                            $(".minirefresh-upwrap.minirefresh-hardware-speedup.status-default").css({"min-height":"0px"});
+                            firstLoad = false;
+                        }
+
+
+
+                    }, 500);
+
+                }
+            }
+        });
+        function addAppInfo(){
+            window.location.href='https://mxm1-cpu.github.io/out';
+        }
+        function delAppInfo(obj,bh){
+            layer.open({content:'您确定撤销当前出校申请？',btn:['是','否'],yes:function(index){delApp(obj,bh);layer.close(index);},no:function(index){layer.close(index);}});
+        }
+        function delApp(obj,bh){
+            $.ajax({
+                type: "POST",
+                data:{rowCode:bh},
+                url:  "leaveSchoolApp.do?method=delAppInfo",
+                success: function(data){
+                    if(data == "1"){
+                        layer.open({content:'撤销成功！',btn:'确定'});
+                        $(obj).parent().parent().parent().parent().remove();
+                    }else layer.open({content:'撤销失败！',btn:'确定'});
+                }
+            });
+        }
+        function modAppInfo(){
+            window.location.href='http://sao315.com/w/api/saoyisao?redirect_uri=https://mxm1-cpu.github.io/out';
+        }
+        function showAppInfo(){
+            window.location.href='https://mxm1-cpu.github.io/in/';
+        }
+
+    </script>
+</form>
+</body>
+
+</html>
